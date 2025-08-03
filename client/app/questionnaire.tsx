@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
   Text,
@@ -10,7 +10,7 @@ import {
   Dimensions,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { router, useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams, useSegments } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
 import { RootState, AppDispatch } from "@/src/store";
@@ -69,11 +69,9 @@ export default function QuestionnaireScreen() {
   const { questionnaire, isLoading, isSaving, error } = useSelector(
     (state: RootState) => state.questionnaire
   );
+  const segments = useSegments();
 
-  // Allow access to questionnaire regardless of completion status
-  // This fixes the access issue
   const searchParams = useLocalSearchParams();
-
   const isEditMode = searchParams?.mode === "edit";
   const [currentStep, setCurrentStep] = useState(1);
   const [dataLoaded, setDataLoaded] = useState(false);
